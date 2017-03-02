@@ -56,13 +56,19 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.sonicle.webtop</groupId>
-			<artifactId>webtop-core</artifactId><!-- Add reference to webtop-sdk artifact! ???????????????????????? -->
+			<artifactId>webtop-core</artifactId>
 			<version>LATEST</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.sonicle.webtop</groupId>
 			<artifactId>webtop-core-db</artifactId>
+			<version>LATEST</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sonicle.webtop</groupId>
+			<artifactId>webtop-core-api</artifactId>
 			<version>LATEST</version>
 			<scope>provided</scope>
 		</dependency>
