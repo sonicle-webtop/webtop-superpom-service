@@ -299,7 +299,7 @@
 								</generate>
 								<target>
 									<packageName>${webtop.service.package}.jooq</packageName>
-									<directory>${project.build.directory}/generated-sources/jooq</directory>
+									<directory>src/main/java</directory>
 								</target>
 							</generator>
 						</configuration>
