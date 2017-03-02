@@ -11,7 +11,7 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		
-		<!-- MAVEN PLUGIN VERSIONS -->
+		<!-- MAVEN PLUGINS VERSIONS -->
 		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
 		<properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
 		<maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
@@ -19,6 +19,13 @@
 		<minify-maven-plugin.version>1.7.5</minify-maven-plugin.version>
 		<jasperreports-maven-plugin.version>1.0.22</jasperreports-maven-plugin.version>
 		<jooq-codegen-maven.version>3.5.3</jooq-codegen-maven.version>
+		
+		<!-- JAVA DEPENDENCIES VERSIONS -->
+		<slf4j-api.version>1.7.6</slf4j-api.version>
+		<jooq.version>3.5.3</jooq.version>
+		<quartz.version>2.2.1</quartz.version>
+		<joda-time.version>2.7</joda-time.version>
+		<ical4j.version>2.0.0</ical4j.version>
 		
 		<!-- SENCHA CONFIGURATION (loaded from "${user.home}/.m2/sencha.properties") -->
 		<!--
@@ -55,6 +62,12 @@
 	
 	<dependencies>
 		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.sonicle.webtop</groupId>
 			<artifactId>webtop-core</artifactId>
 			<version>LATEST</version>
@@ -75,31 +88,19 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.6</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<version>${slf4j-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jooq</groupId>
 			<artifactId>jooq</artifactId>
-			<version>3.5.3</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>2.7</version>
+			<version>${jooq.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.1</version>
+			<version>${quartz.version}</version>
 			<scope>provided</scope>
 			<exclusions>
 				<exclusion>
@@ -107,6 +108,12 @@
 					<artifactId>c3p0</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda-time.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	
