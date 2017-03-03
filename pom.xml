@@ -414,17 +414,6 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>properties-maven-plugin</artifactId>
-						<version>${properties-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>read-properties</id>
-								<phase>validate</phase>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-resources-plugin</artifactId>
 						<version>${maven-resources-plugin.version}</version>
@@ -510,17 +499,6 @@
 										</artifactItem>
 									</artifactItems>
 								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>properties-maven-plugin</artifactId>
-						<version>${properties-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>read-properties</id>
-								<phase>validate</phase>
 							</execution>
 						</executions>
 					</plugin>
