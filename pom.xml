@@ -503,7 +503,7 @@
 										<artifactItem>
 											<groupId>com.sonicle.webtop</groupId>
 											<artifactId>webtop-core</artifactId>
-											<version>5.0.0-SNAPSHOT</version>
+											<version>LATEST</version>
 											<type>jar</type>
 											<overWrite>true</overWrite>
 											<includes>client/com.sonicle.webtop.core/src/**</includes>
