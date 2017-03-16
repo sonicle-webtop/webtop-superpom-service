@@ -16,7 +16,7 @@
 		<properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
 		<maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
 		<exec-maven-plugin.version>1.5.0</exec-maven-plugin.version>
-		<minify-maven-plugin.version>1.7.5</minify-maven-plugin.version>
+		<minify-maven-plugin.version>1.0.175</minify-maven-plugin.version>
 		<jasperreports-maven-plugin.version>1.0.22</jasperreports-maven-plugin.version>
 		<jooq-codegen-maven.version>3.5.3</jooq-codegen-maven.version>
 		
@@ -194,15 +194,28 @@
 				<version>${exec-maven-plugin.version}</version>
 			</plugin>
 			<plugin>
-				<groupId>com.samaxes.maven</groupId>
+				<groupId>com.sonicle.maven</groupId>
 				<artifactId>minify-maven-plugin</artifactId>
 				<version>${minify-maven-plugin.version}</version>
-				<configuration>
-					<charset>UTF-8</charset>
-					<jsEngine>YUI</jsEngine>
-					<webappSourceDir>${project.basedir}/src/main</webappSourceDir>
-					<webappTargetDir>${project.build.outputDirectory}</webappTargetDir>
-				</configuration>
+				<executions>
+					<execution>
+						<id>client-copy-src</id>
+						<phase>none</phase>
+						<configuration>
+							<charset>UTF-8</charset>
+							<jsEngine>CLEANER</jsEngine>
+							<webappSourceDir>${project.basedir}/src/main</webappSourceDir>
+							<webappTargetDir>${project.build.directory}/classes</webappTargetDir>
+							<jsSourceDir>client</jsSourceDir>
+							<jsTargetDir>client/${webtop.service.package}/src</jsTargetDir>
+							<jsSourceIncludes>
+								<jsSourceInclude>**/*.js</jsSourceInclude>
+							</jsSourceIncludes>
+							<skipMerge>true</skipMerge>
+							<nosuffix>true</nosuffix>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -425,13 +438,27 @@
 			<build>
 				<plugins>
 					<plugin>
+						<groupId>com.sonicle.maven</groupId>
+						<artifactId>minify-maven-plugin</artifactId>
+						<version>${minify-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>client-copy-src</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>minify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-resources-plugin</artifactId>
 						<version>${maven-resources-plugin.version}</version>
 						<executions>
 							<execution>
-								<id>client-copy-src</id>
-								<phase>process-resources</phase>
+								<id>client-copy-src-old</id>
+								<phase>none</phase>
 								<goals>
 									<goal>copy-resources</goal>
 								</goals>
