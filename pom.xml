@@ -617,5 +617,57 @@
 				</plugins>
 			</build>
 		</profile>
+		
+		<profile>
+			<id>transifex-push</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>${exec-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>transifex-push-sources</id>
+								<phase>process-sources</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>tx</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>push</argument>
+										<argument>-s</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>transifex-push-translation</id>
+								<phase>process-sources</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>tx</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>push</argument>
+										<argument>-t</argument>
+										<argument>-l</argument>
+										<argument>it</argument>
+										<argument>-f</argument>
+										<argument>--no-interactive</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 </project>
