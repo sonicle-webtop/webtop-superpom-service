@@ -264,6 +264,7 @@
 							</sources>
 						</configuration>
 					</execution>
+					<!--
 					<execution>
 						<id>build-properties</id>
 						<phase>none</phase>
@@ -289,6 +290,7 @@
 							</regexPropertySettings>
 						</configuration>
 					</execution>
+					-->
 				</executions>
 			</plugin>
 			<plugin>
@@ -296,6 +298,38 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>${maven-antrun-plugin.version}</version>
 				<executions>
+					<execution>
+						<id>build-properties</id>
+						<phase>none</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<exportAntProperties>true</exportAntProperties>
+							<target>
+								<script language="javascript">
+								<![CDATA[
+									var value = project.getProperty('webtop.service.package') || '';
+									value = value.replaceAll('\\.', '/');
+									project.setProperty('webtop.service.package.path', value);
+								]]>
+								</script>
+								<script language="javascript">
+								<![CDATA[
+									var value = project.getProperty('webtop.service.restApi.oas') || '';
+									value = value.replaceAll('openapi-', '');
+									value = value.replaceAll('.json', '');
+									value = value.replaceAll('.yaml', '');
+									project.setProperty('webtop.service.restApi.oas.context', value);
+								]]>
+								</script>
+								<!--
+								<echo>webtop.service.package.path: ${webtop.service.package.path}</echo>
+								<echo>webtop.service.restApi.oas.context: ${webtop.service.restApi.oas.context}</echo>
+								-->
+							</target>
+						</configuration>
+					</execution>
 					<execution>
 						<id>replace-manifest-variables</id>
 						<phase>none</phase>
@@ -518,17 +552,6 @@
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>build-helper-maven-plugin</artifactId>
-						<version>${build-helper-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>build-properties</id>
-								<phase>validate</phase>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>properties-maven-plugin</artifactId>
 						<version>${properties-maven-plugin.version}</version>
 						<executions>
@@ -546,6 +569,17 @@
 							<execution>
 								<id>generate-db-classes</id>
 								<phase>generate-sources</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>${maven-antrun-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>build-properties</id>
+								<phase>validate</phase>
 							</execution>
 						</executions>
 					</plugin>
@@ -582,17 +616,6 @@
 			</activation>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>build-helper-maven-plugin</artifactId>
-						<version>${build-helper-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>build-properties</id>
-								<phase>validate</phase>
-							</execution>
-						</executions>
-					</plugin>
 					<plugin>
 						<groupId>com.sonicle.maven</groupId>
 						<artifactId>minify-maven-plugin</artifactId>
@@ -644,6 +667,10 @@
 						<version>${maven-antrun-plugin.version}</version>
 						<executions>
 							<execution>
+								<id>build-properties</id>
+								<phase>validate</phase>
+							</execution>
+							<execution>
 								<id>replace-manifest-variables</id>
 								<phase>prepare-package</phase>
 							</execution>
@@ -667,17 +694,6 @@
 						<executions>
 							<execution>
 								<id>read-sencha-properties</id>
-								<phase>validate</phase>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>build-helper-maven-plugin</artifactId>
-						<version>${build-helper-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>build-properties</id>
 								<phase>validate</phase>
 							</execution>
 						</executions>
@@ -770,6 +786,10 @@
 						<artifactId>maven-antrun-plugin</artifactId>
 						<version>${maven-antrun-plugin.version}</version>
 						<executions>
+							<execution>
+								<id>build-properties</id>
+								<phase>validate</phase>
+							</execution>
 							<execution>
 								<id>replace-manifest-variables</id>
 								<phase>prepare-package</phase>
