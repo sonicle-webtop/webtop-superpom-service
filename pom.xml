@@ -502,6 +502,34 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>${swagger-codegen-maven-plugin.version}</version>
+				<!--<version>3.0.0-SNAPSHOT</version>-->
+				<executions>
+					<execution>
+						<id>generate-oas-classes</id>
+						<phase>none</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>src/main/resources/${webtop.service.package.path}/${webtop.service.restApi.oas}</inputSpec>
+							<language>jaxrs-spec</language>
+							<output>.</output>
+							<addCompileSourceRoot>false</addCompileSourceRoot>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<configOptions>
+								<!--<dateLibrary>java8</dateLibrary>-->
+								<sourceFolder>src/gen/swagger</sourceFolder>
+								<apiPackage>${webtop.service.package}.swagger.${webtop.service.restApi.oas.context}.api</apiPackage>
+								<modelPackage>${webtop.service.package}.swagger.${webtop.service.restApi.oas.context}.model</modelPackage>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>com.sonicle.maven</groupId>
 				<artifactId>jasperreports-maven-plugin</artifactId>
 				<version>${jasperreports-maven-plugin.version}</version>
@@ -583,6 +611,50 @@
 							<execution>
 								<id>build-properties</id>
 								<phase>validate</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>generate-restapi-classes</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>${maven-clean-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>clean-gen-swagger</id>
+								<phase>clean</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>${maven-antrun-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>build-properties</id>
+								<phase>validate</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>io.swagger</groupId>
+						<artifactId>swagger-codegen-maven-plugin</artifactId>
+						<version>${swagger-codegen-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>generate-oas-classes</id>
+								<phase>generate-sources</phase>
 							</execution>
 						</executions>
 					</plugin>
