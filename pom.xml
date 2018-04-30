@@ -516,6 +516,7 @@
 						<configuration>
 							<inputSpec>src/main/resources/${webtop.service.package.path}/${webtop.service.restApi.oas}</inputSpec>
 							<language>jaxrs-spec</language>
+							<templateDirectory>.swagger-codegen/templates/jaxrs-spec</templateDirectory>
 							<output>.</output>
 							<addCompileSourceRoot>false</addCompileSourceRoot>
 							<generateSupportingFiles>false</generateSupportingFiles>
