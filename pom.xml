@@ -203,6 +203,9 @@
 					<execution>
 						<id>clean-gen-swagger</id>
 						<phase>none</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
 						<configuration>
 							<filesets>
 								<fileset>
@@ -491,7 +494,7 @@
 								</generate>
 								<target>
 									<packageName>${webtop.service.package}.jooq</packageName>
-									<directory>src/main/java</directory>
+									<directory>src/gen/jooq</directory>
 								</target>
 							</generator>
 						</configuration>
