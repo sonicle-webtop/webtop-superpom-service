@@ -25,7 +25,7 @@
 		
 		<!-- JAVA DEPENDENCIES VERSIONS -->
 		<atmosphere.version>2.4.20</atmosphere.version>
-		<commons-collections.version>3.2.2</commons-collections.version>
+		<commons-collections4.version>4.2</commons-collections4.version>
 		<commons-io.version>2.4</commons-io.version>
 		<commons-vfs2.version>2.2</commons-vfs2.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
@@ -98,6 +98,16 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- 3rd party libraries -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>${commons-collections4.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
