@@ -277,33 +277,6 @@
 							</sources>
 						</configuration>
 					</execution>
-					<!--
-					<execution>
-						<id>build-properties</id>
-						<phase>none</phase>
-						<goals>
-							<goal>regex-properties</goal>
-						</goals>
-						<configuration>
-							<regexPropertySettings>
-								<regexPropertySetting>
-									<name>webtop.service.package.path</name>
-									<value>${webtop.service.package}</value>
-									<regex>\.</regex>
-									<replacement>/</replacement>
-									<failIfNoMatch>false</failIfNoMatch>
-								</regexPropertySetting>
-								<regexPropertySetting>
-									<name>webtop.service.restApi.oas.context</name>
-									<value>${webtop.service.restApi.oas}</value>
-									<regex>openapi-(.+).(?:json|yaml)</regex>
-									<replacement>$1</replacement>
-									<failIfNoMatch>false</failIfNoMatch>
-								</regexPropertySetting>
-							</regexPropertySettings>
-						</configuration>
-					</execution>
-					-->
 				</executions>
 			</plugin>
 			<plugin>
@@ -384,6 +357,7 @@
 								<replace file="${project.build.outputDirectory}/META-INF/webtop-services.xml">
 									<replacefilter token="@@webtop.service.version@@" value="${project.version}" />
 									<replacefilter token="@@webtop.service.buildDate@@" value="${webtop.service.buildDate}" />
+									<replacefilter token="@@webtop.service.buildType@@" value="${webtop.service.buildType}" />
 								</replace>
 							</target>	
 						</configuration>
@@ -726,24 +700,32 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
+			<properties>
+				<webtop.service.buildType>dev</webtop.service.buildType>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>com.sonicle.maven</groupId>
-						<artifactId>minify-maven-plugin</artifactId>
-						<version>${minify-maven-plugin.version}</version>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>${maven-antrun-plugin.version}</version>
 						<executions>
 							<execution>
-								<id>client-copy-src</id>
-								<phase>process-resources</phase>
+								<id>build-properties</id>
+								<phase>validate</phase>
+							</execution>
+							<execution>
+								<id>replace-manifest-variables</id>
+								<phase>prepare-package</phase>
 							</execution>
 						</executions>
-					</plugin>
+					</plugin>	
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-resources-plugin</artifactId>
 						<version>${maven-resources-plugin.version}</version>
 						<executions>
+							<!--
 							<execution>
 								<id>client-copy-src-old</id>
 								<phase>none</phase>
@@ -763,6 +745,7 @@
 									</resources>
 								</configuration>
 							</execution>
+							-->
 							<execution>
 								<id>client-copy-laf</id>
 								<phase>process-resources</phase>
@@ -770,6 +753,42 @@
 							<execution>
 								<id>client-copy-locale</id>
 								<phase>process-resources</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>com.sonicle.maven</groupId>
+						<artifactId>minify-maven-plugin</artifactId>
+						<version>${minify-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>client-copy-src</id>
+								<phase>process-resources</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<profile>
+			<id>profile-production</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<webtop.service.buildType>prod</webtop.service.buildType>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>properties-maven-plugin</artifactId>
+						<version>${properties-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>read-sencha-properties</id>
+								<phase>validate</phase>
 							</execution>
 						</executions>
 					</plugin>
@@ -787,26 +806,19 @@
 								<phase>prepare-package</phase>
 							</execution>
 						</executions>
-					</plugin>		
-				</plugins>
-			</build>
-		</profile>
-		
-		<profile>
-			<id>profile-production</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
+					</plugin>
 					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>properties-maven-plugin</artifactId>
-						<version>${properties-maven-plugin.version}</version>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>${maven-resources-plugin.version}</version>
 						<executions>
 							<execution>
-								<id>read-sencha-properties</id>
-								<phase>validate</phase>
+								<id>client-copy-laf</id>
+								<phase>process-resources</phase>
+							</execution>
+							<execution>
+								<id>client-copy-locale</id>
+								<phase>process-resources</phase>
 							</execution>
 						</executions>
 					</plugin>
@@ -902,40 +914,8 @@
 										<argument>--remove-text-references</argument>
 										<argument>--strip-comments</argument>
 										<argument>--output-file=${project.build.outputDirectory}/client/${webtop.service.package}/${webtop.service.package}-debug.js</argument>
-										
-										<!--<argument>-classpath=client,${sencha.classpath.basedir}/com.sonicle.webtop.core/src,${sencha.classpath.basedir}/extjs/packages/sonicle-extensions/src</argument>-->
 									</arguments>
 								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-resources-plugin</artifactId>
-						<version>${maven-resources-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>client-copy-laf</id>
-								<phase>process-resources</phase>
-							</execution>
-							<execution>
-								<id>client-copy-locale</id>
-								<phase>process-resources</phase>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>${maven-antrun-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>build-properties</id>
-								<phase>validate</phase>
-							</execution>
-							<execution>
-								<id>replace-manifest-variables</id>
-								<phase>prepare-package</phase>
 							</execution>
 						</executions>
 					</plugin>
