@@ -12,13 +12,19 @@
 		<version>2</version>
 	</parent>
 	
-	<properties>		
-		<!-- SENCHA: integration (loaded from "${user.home}/.m2/sencha.properties") -->
+	<properties>
+		<!-- SENCHA -->
 		<!--
-			Sencha CMD (version 6) path in which to find CMD executable
-		<sencha.cmd.v6></sencha.cmd.v6>
+			Defines the target properties file to load
+		-->
+		<sencha.properties.target>sencha</sencha.properties.target>
 		
-			Path of the workspace
+		<!-- SENCHA: integration (loaded from properties file at "{sencha.properties.target}.properties") -->
+		<!--
+			Sencha CMD path in which to find CMD executable (loaded from target properties file)
+		<sencha.cmd></sencha.cmd> or deprecated <sencha.cmd.v6></sencha.cmd.v6>
+		
+			Path of the workspace (loaded from target properties file)
 		<sencha.workspace></sencha.workspace>
 		-->
 		<sencha.classpath.basedir>${project.basedir}/target/sencha-classpath/client</sencha.classpath.basedir>
@@ -204,7 +210,7 @@
 						</goals>
 						<configuration>
 							<files>
-								<file>${user.home}/.m2/sencha.properties</file>
+								<file>${user.home}/.m2/${sencha.properties.target}.properties</file>
 							</files>
 						</configuration>
 					</execution>
@@ -255,6 +261,15 @@
 						<configuration>
 							<exportAntProperties>true</exportAntProperties>
 							<target>
+								<echo>Evaluating deprecated properties</echo>
+								<script language="javascript">
+								<![CDATA[
+									var value = project.getProperty('sencha.cmd.v6');
+									if (value !== null && value.trim() !== '') {
+										project.setProperty('sencha.cmd', value);
+									}
+								]]>
+								</script>
 								<script language="javascript">
 								<![CDATA[
 									var value = project.getProperty('webtop.service.package') || '';
@@ -840,7 +855,7 @@
 									<goal>exec</goal>
 								</goals>
 								<configuration>
-									<executable>${sencha.cmd.v6}/sencha</executable>
+									<executable>${sencha.cmd}/sencha</executable>
 									<workingDirectory>${project.basedir}/src/main</workingDirectory>
 									<arguments>
 										<!--<argument>-debug</argument>-->
