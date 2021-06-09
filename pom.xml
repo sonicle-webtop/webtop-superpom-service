@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.sonicle.webtop</groupId>
 		<artifactId>webtop-superpom</artifactId>
-		<version>3</version>
+		<version>4</version>
 	</parent>
 	
 	<properties>
@@ -518,9 +518,9 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>com.sonicle.maven</groupId>
-				<artifactId>jasperreports-maven-plugin</artifactId>
-				<version>${jasperreports-maven-plugin.version}</version>
+				<groupId>com.alexnederlof</groupId>
+				<artifactId>jasperreports-plugin</artifactId>
+				<version>${jasperreports-plugin.version}</version>
 				<configuration>
 					<sourceDirectory>src/main/reports</sourceDirectory>
 					<outputDirectory>${project.build.outputDirectory}</outputDirectory>
@@ -658,9 +658,9 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>com.sonicle.maven</groupId>
-						<artifactId>jasperreports-maven-plugin</artifactId>
-						<version>${jasperreports-maven-plugin.version}</version>
+						<groupId>com.alexnederlof</groupId>
+						<artifactId>jasperreports-plugin</artifactId>
+						<version>${jasperreports-plugin.version}</version>
 						<executions>
 							<execution>
 								<id>build-reports</id>
