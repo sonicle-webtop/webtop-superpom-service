@@ -48,24 +48,6 @@
 			webtop.service.package.path
 			webtop.service.restApi.oas.context
 		-->
-		
-		<!-- WEBTOP: service configuration (loaded from "${user.home}/.m2/${artifactId}.properties") -->
-		<!--
-			JDBC Driver to use in JOOQ configuration
-		<webtop.service.db.jdbc.driver></webtop.service.db.jdbc.driver>
-		
-			JDBC Driver to use in JOOQ configuration
-		<webtop.service.db.jdbc.url></webtop.service.db.jdbc.url>
-		
-			JDBC Driver to use in JOOQ configuration
-		<webtop.service.db.jdbc.user></webtop.service.db.jdbc.user>
-		
-			JDBC Driver to use in JOOQ configuration
-		<webtop.service.db.jdbc.password></webtop.service.db.jdbc.password>
-		
-			DB Schema to use in JOOQ configuration
-		<webtop.service.db.schema></webtop.service.db.schema>
-		-->
 	</properties>
 	
 	<dependencies>
@@ -456,6 +438,8 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Deprecate DB classes generation on service: do it in service-api instead -->
+			<!--
 			<plugin>
 				<groupId>org.jooq</groupId>
 				<artifactId>jooq-codegen-maven</artifactId>
@@ -464,7 +448,7 @@
 					<dependency>
 						<groupId>org.postgresql</groupId>
 						<artifactId>postgresql</artifactId>
-						<version>9.3-1102-jdbc4</version>
+						<version>${postgresql.version}</version>
 					</dependency>
 				</dependencies>
 				<executions>
@@ -483,36 +467,40 @@
 							</jdbc>
 							<generator>
 								<database>
-									<name>org.jooq.util.postgres.PostgresDatabase</name>
+									<name>org.jooq.meta.postgres.PostgresDatabase</name>
 									<includes>.*</includes>
 									<excludes></excludes>
 									<inputSchema>${webtop.service.db.schema}</inputSchema>
-									<customTypes>
-										<customType>
-											<name>JodaLocalDate</name>
-											<type>org.joda.time.LocalDate</type>
-											<converter>com.sonicle.webtop.core.jooq.LocalDateConverter</converter>
-										</customType>
-										<customType>
-											<name>JodaDateTime</name>
-											<type>org.joda.time.DateTime</type>
-											<converter>com.sonicle.webtop.core.jooq.DateTimeConverter</converter>
-										</customType>
-									</customTypes>
 									<forcedTypes>
 										<forcedType>
-											<name>JodaLocalDate</name>
-											<expression>.*</expression>
-											<types>date.*</types>
+											<userType>org.joda.time.LocalDate</userType>
+											<converter>com.sonicle.jooq.jsr310.LocalDateJodaConverter</converter>
+											<includeExpression>.*</includeExpression>
+											<includeTypes>date</includeTypes>
 										</forcedType>
 										<forcedType>
-											<name>JodaDateTime</name>
-											<expression>.*</expression>
-											<types>timestamp.*</types>
+											<userType>org.joda.time.jsr310.LocalDateTime</userType>
+											<converter>com.sonicle.jooq.LocalDateTimeJodaConverter</converter>
+											<includeExpression>.*</includeExpression>
+											<includeTypes>timestamp</includeTypes>
+										</forcedType>
+										<forcedType>
+											<userType>org.joda.time.LocalTime</userType>
+											<converter>com.sonicle.jooq.jsr310.LocalTimeJodaConverter</converter>
+											<includeExpression>.*</includeExpression>
+											<includeTypes>time</includeTypes>
+										</forcedType>
+										<forcedType>
+											<userType>org.joda.time.DateTime</userType>
+											<converter>com.sonicle.jooq.jsr310.OffsetDateTimeJodaConverter</converter>
+											<includeExpression>.*</includeExpression>
+											<includeTypes>timestamptz</includeTypes>
 										</forcedType>
 									</forcedTypes>
 								</database>
 								<generate>
+									<fullyQualifiedTypes>.*</fullyQualifiedTypes>
+									<globalCatalogReferences>false</globalCatalogReferences>
 									<pojos>true</pojos>
 									<immutablePojos>false</immutablePojos>
 								</generate>
@@ -525,6 +513,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 			<plugin>
 				<groupId>io.swagger</groupId>
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
@@ -599,6 +588,8 @@
 	</build>
 	
 	<profiles>
+		<!-- Deprecate DB classes generation on service: do it in service-api instead -->
+		<!--
 		<profile>
 			<id>generate-db-classes</id>
 			<activation>
@@ -642,7 +633,7 @@
 				</plugins>
 			</build>
 		</profile>
-		
+		-->
 		<profile>
 			<id>generate-restapi-classes</id>
 			<activation>
