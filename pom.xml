@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.sonicle.webtop</groupId>
 		<artifactId>webtop-superpom</artifactId>
-		<version>5</version>
+		<version>6</version>
 	</parent>
 	
 	<properties>
@@ -126,7 +126,9 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<!-- Codegen was not able to generate classes with new annotations package (io.swagger.core.v3), so use old version for now! -->
 			<groupId>io.swagger</groupId>
+			<!--<groupId>io.swagger.core.v3</groupId>-->
 			<artifactId>swagger-annotations</artifactId>
 			<version>${swagger-annotations.version}</version>
 			<scope>provided</scope>
@@ -515,10 +517,9 @@
 			</plugin>
 			-->
 			<plugin>
-				<groupId>io.swagger</groupId>
-				<artifactId>swagger-codegen-maven-plugin</artifactId>
-				<version>${swagger-codegen-maven-plugin.version}</version>
-				<!--<version>3.0.0-SNAPSHOT</version>-->
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>${openapi-generator-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>generate-oas-classes</id>
@@ -528,16 +529,17 @@
 						</goals>
 						<configuration>
 							<inputSpec>src/main/resources/${webtop.service.package.path}/${webtop.service.restApi.oas}</inputSpec>
-							<language>jaxrs-spec</language>
-							<templateDirectory>.swagger-codegen/templates/jaxrs-spec</templateDirectory>
+							<generatorName>jaxrs-spec</generatorName>
+							<templateDirectory>.openapi-generator/templates/jaxrs-spec</templateDirectory>
 							<output>.</output>
+							<apiPackage>${webtop.service.package}.swagger.${webtop.service.restApi.oas.context}.api</apiPackage>
+							<modelPackage>${webtop.service.package}.swagger.${webtop.service.restApi.oas.context}.model</modelPackage>
+							<modelNamePrefix>Api</modelNamePrefix>
 							<addCompileSourceRoot>false</addCompileSourceRoot>
 							<generateSupportingFiles>false</generateSupportingFiles>
 							<configOptions>
-								<!--<dateLibrary>java8</dateLibrary>-->
 								<sourceFolder>src/gen/swagger</sourceFolder>
-								<apiPackage>${webtop.service.package}.swagger.${webtop.service.restApi.oas.context}.api</apiPackage>
-								<modelPackage>${webtop.service.package}.swagger.${webtop.service.restApi.oas.context}.model</modelPackage>
+								<!--<dateLibrary>java8</dateLibrary>-->
 							</configOptions>
 						</configuration>
 					</execution>
@@ -664,9 +666,9 @@
 						</executions>
 					</plugin>
 					<plugin>
-						<groupId>io.swagger</groupId>
-						<artifactId>swagger-codegen-maven-plugin</artifactId>
-						<version>${swagger-codegen-maven-plugin.version}</version>
+						<groupId>org.openapitools</groupId>
+						<artifactId>openapi-generator-maven-plugin</artifactId>
+						<version>${openapi-generator-maven-plugin.version}</version>
 						<executions>
 							<execution>
 								<id>generate-oas-classes</id>
