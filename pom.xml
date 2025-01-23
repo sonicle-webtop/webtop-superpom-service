@@ -543,9 +543,13 @@
 							<modelNamePrefix>Api</modelNamePrefix>
 							<addCompileSourceRoot>false</addCompileSourceRoot>
 							<generateSupportingFiles>false</generateSupportingFiles>
+							<!-- FIXME: see override in child projects, this will be moved here when tools will be effectively upgraded -->
+							<!--<openapiNormalizer>REF_AS_PARENT_IN_ALLOF=true</openapiNormalizer>--><!-- Force using Java inheritance for AllOf notation -->
 							<configOptions>
 								<sourceFolder>src/gen/swagger</sourceFolder>
 								<!--<dateLibrary>java8</dateLibrary>-->
+								<!-- https://stackoverflow.com/questions/73021872/openapi-generator-initialize-list-properties-as-null-and-not-as-empty-lists -->
+								<!--<containerDefaultToNull>true</containerDefaultToNull>--><!-- Seems not working for v.6.6.0 -->
 							</configOptions>
 						</configuration>
 					</execution>
