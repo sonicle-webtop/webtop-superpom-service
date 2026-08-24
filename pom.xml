@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sonicle.webtop</groupId>
     <artifactId>webtop-superpom-service</artifactId>
-    <version>11</version><!-- Any update to this version MUST be reflected in webtop-superpom-service-api also: both projects MUST have same version! -->
+    <version>12</version><!-- Any update to this version MUST be reflected in webtop-superpom-service-api also: both projects MUST have same version! -->
     <packaging>pom</packaging>
 	
 	<parent>
@@ -33,6 +33,10 @@
 		<sencha.cmd.exec.args></sencha.cmd.exec.args>
 		-->
 		<sencha.classpath.basedir>${project.basedir}/target/sencha-classpath/client</sencha.classpath.basedir>
+		
+		<!-- WEBTOP: base references -->
+		<sonicle-extjs-extensions.version>[3.0,4.0-alpha)</sonicle-extjs-extensions.version>
+		<webtop-core.version>[5.0,6.0-alpha)</webtop-core.version>
 		
 		<!-- WEBTOP: service configuration -->
 		<webtop.service.baseArtifact><!-- fill in child POM --></webtop.service.baseArtifact>
@@ -141,15 +145,21 @@
 		</dependency>
 		<!-- WebTop libraries -->
 		<dependency>
+			<groupId>com.sonicle.extjs</groupId>
+			<artifactId>sonicle-extjs-extensions</artifactId>
+			<version>${sonicle-extjs-extensions.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.sonicle.webtop</groupId>
 			<artifactId>webtop-core</artifactId>
-			<version>LATEST</version>
+			<version>${webtop-core.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.sonicle.webtop</groupId>
 			<artifactId>webtop-core-api</artifactId>
-			<version>LATEST</version>
+			<version>${webtop-core.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
@@ -856,29 +866,33 @@
 						<version>2.10</version>
 						<executions>
 							<execution>
+								<id>sencha-classpath-extensions</id>
+								<phase>process-sources</phase>
 								<goals>
-									<goal>unpack</goal>
+									<goal>unpack-dependencies</goal>
 								</goals>
 								<configuration>
 									<outputDirectory>${project.build.directory}/sencha-classpath</outputDirectory>
-									<artifactItems>
-										<artifactItem>
-											<groupId>com.sonicle.extjs</groupId>
-											<artifactId>sonicle-extjs-extensions</artifactId>
-											<version>LATEST</version>
-											<type>jar</type>
-											<overWrite>true</overWrite>
-											<includes>client/extjs/packages/sonicle-extensions/src/**</includes>
-										</artifactItem>
-										<artifactItem>
-											<groupId>com.sonicle.webtop</groupId>
-											<artifactId>webtop-core</artifactId>
-											<version>LATEST</version>
-											<type>jar</type>
-											<overWrite>true</overWrite>
-											<includes>client/com.sonicle.webtop.core/src/**</includes>
-										</artifactItem>
-									</artifactItems>
+									<includeGroupIds>com.sonicle.extjs</includeGroupIds>
+									<includeArtifactIds>sonicle-extjs-extensions</includeArtifactIds>
+									<includes>client/extjs/packages/sonicle-extensions/src/**</includes>
+									<overWriteReleases>true</overWriteReleases>
+									<excludeTransitive>true</excludeTransitive>
+								</configuration>
+							</execution>
+							<execution>
+								<id>sencha-classpath-core</id>
+								<phase>process-sources</phase>
+								<goals>
+									<goal>unpack-dependencies</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}/sencha-classpath</outputDirectory>
+									<includeGroupIds>com.sonicle.webtop</includeGroupIds>
+									<includeArtifactIds>webtop-core</includeArtifactIds>
+									<includes>client/com.sonicle.webtop.core/src/**</includes>
+									<overWriteReleases>true</overWriteReleases>
+									<excludeTransitive>true</excludeTransitive>
 								</configuration>
 							</execution>
 						</executions>
